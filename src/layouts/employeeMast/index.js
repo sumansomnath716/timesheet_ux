@@ -54,7 +54,7 @@ function EmployeeMast() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Employee Master Works
+                  Employee Master
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
