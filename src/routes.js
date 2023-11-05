@@ -58,6 +58,11 @@ import BiotechOutlinedIcon from '@mui/icons-material/BiotechOutlined';
 
 import BoyOutlinedIcon from '@mui/icons-material/BoyOutlined';
 import EmployeeMast from "layouts/employeeMast";
+import ProjectMast from "layouts/projectMast";
+import AssignmentMast from "layouts/assignmentMast";
+import NotificationMast from "layouts/notificationMast";
+import TechnologyMast from "layouts/technologyMast";
+import PositionMast from "layouts/positionMast";
 const routes = [
   {
     type: "collapse",
@@ -73,64 +78,65 @@ const routes = [
    
       type: "collapse",
     name: "Employees",
-    key: "employee",
+    key: "employees",
     icon: <BadgeOutlinedIcon/>,
-    route: "/employee",
+    route: "/employees",
     
     component: <EmployeeMast />
+    },
+    {
+    
+      type: "collapse",
+      name: "Positions",
+      key: "positions",
+      icon: <BoyOutlinedIcon/>,
+      route: "/positions",
+      
+      component: <PositionMast /> 
     },
   {
     
     type: "collapse",
     name: "Projects",
-    key: "project",
+    key: "projects",
     icon: <AccountTreeOutlinedIcon/>,
-    route: "/tables",
+    route: "/projects",
     
-    component: <Tables /> 
+    component: <ProjectMast /> 
   },
   {
     
     type: "collapse",
     name: "Assignments",
-    key: "assignment",
+    key: "assignments",
     icon: <AssignmentOutlinedIcon/>,
-    route: "/tables",
+    route: "/assignments",
     
-    component: <Tables /> 
+    component: <AssignmentMast/>
   },
   {
     
     type: "collapse",
     name: "Notifications",
-    key: "notification",
+    key: "notifications",
     icon: <NotificationsNoneOutlinedIcon/>,
-    route: "/tables",
+    route: "/notifications",
     
-    component: <Tables /> 
+    component: <NotificationMast/>
   }
   ,
   {
     
     type: "collapse",
     name: "Technologies",
-    key: "technology",
+    key: "technologies",
     icon: <BiotechOutlinedIcon/>,
-    route: "/tables",
+    route: "/technologies",
     
-    component: <Tables /> 
+    component: <TechnologyMast/> 
   }
   ,
-  {
-    
-    type: "collapse",
-    name: "Positions",
-    key: "position",
-    icon: <BoyOutlinedIcon/>,
-    route: "/tables",
-    
-    component: <Tables /> 
-  },
+  
   
   
    
