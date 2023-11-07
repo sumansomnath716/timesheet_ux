@@ -1,4 +1,4 @@
-/**
+/*
 =========================================================
 * Material Dashboard 2 React - v2.2.0
 =========================================================
@@ -57,9 +57,7 @@ function PositionMast() {
                   Position Master
                 </MDTypography>
               </MDBox>
-              <MDBox pt={3}>
-                {/* DATATABLE */}
-              </MDBox>
+              <MDBox pt={3}>{/* DATATABLE */}</MDBox>
             </Card>
           </Grid>
           {/* <Grid item xs={12}>

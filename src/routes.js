@@ -47,16 +47,16 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
-import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
-import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import StorageOutlinedIcon from "@mui/icons-material/StorageOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 
-import BiotechOutlinedIcon from '@mui/icons-material/BiotechOutlined';
+import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
 
-import BoyOutlinedIcon from '@mui/icons-material/BoyOutlined';
+import BoyOutlinedIcon from "@mui/icons-material/BoyOutlined";
 import EmployeeMast from "layouts/employeeMast";
 import ProjectMast from "layouts/projectMast";
 import AssignmentMast from "layouts/assignmentMast";
@@ -70,76 +70,63 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    children:[],
+    children: [],
     component: <Dashboard />,
   },
   {
-   
-   
-      type: "collapse",
+    type: "collapse",
     name: "Employees",
     key: "employees",
-    icon: <BadgeOutlinedIcon/>,
+    icon: <BadgeOutlinedIcon />,
     route: "/employees",
-    
-    component: <EmployeeMast />
-    },
-    {
-    
-      type: "collapse",
-      name: "Positions",
-      key: "positions",
-      icon: <BoyOutlinedIcon/>,
-      route: "/positions",
-      
-      component: <PositionMast /> 
-    },
+
+    component: <EmployeeMast />,
+  },
   {
-    
+    type: "collapse",
+    name: "Positions",
+    key: "positions",
+    icon: <BoyOutlinedIcon />,
+    route: "/positions",
+
+    component: <PositionMast />,
+  },
+  {
     type: "collapse",
     name: "Projects",
     key: "projects",
-    icon: <AccountTreeOutlinedIcon/>,
+    icon: <AccountTreeOutlinedIcon />,
     route: "/projects",
-    
-    component: <ProjectMast /> 
+
+    component: <ProjectMast />,
   },
   {
-    
     type: "collapse",
     name: "Assignments",
     key: "assignments",
-    icon: <AssignmentOutlinedIcon/>,
+    icon: <AssignmentOutlinedIcon />,
     route: "/assignments",
-    
-    component: <AssignmentMast/>
+
+    component: <AssignmentMast />,
   },
   {
-    
     type: "collapse",
     name: "Notifications",
     key: "notifications",
-    icon: <NotificationsNoneOutlinedIcon/>,
+    icon: <NotificationsNoneOutlinedIcon />,
     route: "/notifications",
-    
-    component: <NotificationMast/>
-  }
-  ,
+
+    component: <NotificationMast />,
+  },
   {
-    
     type: "collapse",
     name: "Technologies",
     key: "technologies",
-    icon: <BiotechOutlinedIcon/>,
+    icon: <BiotechOutlinedIcon />,
     route: "/technologies",
-    
-    component: <TechnologyMast/> 
-  }
-  ,
-  
-  
-  
-   
+
+    component: <TechnologyMast />,
+  },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -181,7 +168,7 @@ const routes = [
     key: "log-out",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
-    children:[],
+    children: [],
     component: <SignIn />,
   },
   // {

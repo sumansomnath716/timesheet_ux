@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -47,6 +47,8 @@ function Basic() {
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
+  const navigate = useNavigate();
+
   return (
     <BasicLayout image={bgImage}>
       <Card>
@@ -63,8 +65,8 @@ function Basic() {
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Sign in
-          </MDTypography> 
-           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+          </MDTypography>
+          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
               <MDTypography component={MuiLink} href="#" variant="body1" color="white">
                 <FacebookIcon color="inherit" />
@@ -103,7 +105,12 @@ function Basic() {
               </MDTypography>
             </MDBox> */}
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton
+                variant="gradient"
+                color="info"
+                onClick={() => navigate("/dashboard")}
+                fullWidth
+              >
                 sign in
               </MDButton>
             </MDBox>
