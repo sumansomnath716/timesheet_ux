@@ -17,7 +17,7 @@ const schema = Yup.object().shape({
     .min(10, "!!Minimum 10 digits allowed")
     .max(10, "!!Maximum 10 digits allowed"),
 });
-const EmpForm = ({ formValue, submit }) => {
+const TechForm = ({ formValue, submit }) => {
   const ref = useRef();
   useEffect(() => {
     ref.current.resetForm();
@@ -34,7 +34,7 @@ const EmpForm = ({ formValue, submit }) => {
       initialValues={{ name: "", email: "", phone: "", id: 0 }}
       validationSchema={schema}
       innerRef={ref}
-      onSubmit={(values, { resetForm }) => {
+      onSubmit={(values,{ resetForm }) => {
         submit(values);
         resetForm();
       }}
@@ -137,4 +137,4 @@ const EmpForm = ({ formValue, submit }) => {
   );
 };
 
-export default EmpForm;
+export default TechForm;

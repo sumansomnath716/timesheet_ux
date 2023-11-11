@@ -54,16 +54,16 @@ import { visuallyHidden } from "@mui/utils";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import MDDialog from "./dialog/index";
 
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
-  { field: "name", header: "Employee", align: "center", minWidth: 16.6 },
-  { field: "email", header: "Email", align: "center", minWidth: 16.6 },
-  { field: "phone", header: "Contact", align: "center", minWidth: 16.6 },
-  { field: "toggle", header: "Status", align: "center", minWidth: 16.6 },
-  { field: "edit", header: "Action", align: "center", minWidth: 16.6 },
+  { field: "proj_name", header: "Project", align: "center", minWidth: 16.6 },
+  { field: "proj_url", header: "Project URL", align: "center", minWidth: 16.6 },
+  { field: "proj_status", header: "Status", align: "center", minWidth: 16.6 },
+  { field: "edit", header: "Edit", align: "center", minWidth: 16.6 },
+  { field: "delete", header: "Delete", align: "center", minWidth: 16.6 },
 ];
 
 function ProjectMast() {
@@ -81,7 +81,7 @@ function ProjectMast() {
 
   const [selectedItems, setSelectedItems] = useState(null);
 
-  const [employee, setEmployee] = useState([]);
+  const [project, setProject] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -95,12 +95,12 @@ function ProjectMast() {
   };
 
   const addOrEditRow = (emp) => {
-    setEmployee((prev) =>
+    setProject((prev) =>
       prev.map((item) => {
         if (item.id === emp.id) {
-          item.name = emp.name;
-          item.email = emp.email;
-          item.phone = emp.phone;
+          item.proj_name = emp.proj_name;
+          item.proj_url = emp.proj_url;
+          item.proj_dtls = emp.proj_dtls;
         }
         return item;
       })
@@ -108,11 +108,11 @@ function ProjectMast() {
   };
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/users`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployee(json);
-      });
+    // fetch(`https://jsonplaceholder.typicode.com/users`)
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setEmployee(json);
+    //   });
   }, []);
 
   const handleChange = (rows, event) => {
@@ -199,25 +199,28 @@ function ProjectMast() {
                             align={column.align}
                             sx={{ fontSize: 12, fontWeight: 600 }}
                           >
-                            {/* {column.header} */}
-                            <TableSortLabel
-                              active={orderBy === column.field}
-                              direction={orderBy === column.field ? order : "asc"}
-                              onClick={createSortHandler(column.field)}
-                            >
-                              {column.header}
-                              {orderBy === column.field ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                                </Box>
-                              ) : null}
-                            </TableSortLabel>
+                            {column.field !== "edit" && column.field !== "delete" ? (
+                              <TableSortLabel
+                                active={orderBy === column.field}
+                                direction={orderBy === column.field ? order : "asc"}
+                                onClick={createSortHandler(column.field)}
+                              >
+                                {column.header}
+                                {orderBy === column.field ? (
+                                  <Box component="span" sx={visuallyHidden}>
+                                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                                  </Box>
+                                ) : null}
+                              </TableSortLabel>
+                            ) : (
+                              column.header
+                            )}
                           </TableCell>
                         ))}
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {employee
+                      {project
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => {
                           return (
@@ -234,7 +237,7 @@ function ProjectMast() {
                                       {index + 1}
                                     </TableCell>
                                   );
-                                } else if (column.field === "toggle") {
+                                } else if (column.field === "proj_status") {
                                   rowValue = (
                                     <TableCell key={column.field} align={column.align}>
                                       <Switch
@@ -257,6 +260,12 @@ function ProjectMast() {
                                       </IconButton>
                                     </TableCell>
                                   );
+                                } else if (column.field === "delete") {
+                                  <TableCell key={column.field} align={column.align}>
+                                    <IconButton aria-label="edit" color="danger">
+                                      <DeleteOutlinedIcon />
+                                    </IconButton>
+                                  </TableCell>;
                                 } else {
                                   rowValue = (
                                     <TableCell
@@ -279,7 +288,7 @@ function ProjectMast() {
                 <TablePagination
                   rowsPerPageOptions={[10, 25, 100]}
                   component="div"
-                  count={employee.length}
+                  count={project.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
