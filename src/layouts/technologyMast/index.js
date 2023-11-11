@@ -48,7 +48,7 @@ import { visuallyHidden } from "@mui/utils";
 /****
  * END
  */
-
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
@@ -57,11 +57,11 @@ import MDDialog from "./dialog/index";
 
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
-  { field: "name", header: "Employee", align: "center", minWidth: 16.6 },
-  { field: "email", header: "Email", align: "center", minWidth: 16.6 },
-  { field: "phone", header: "Contact", align: "center", minWidth: 16.6 },
-  { field: "toggle", header: "Status", align: "center", minWidth: 16.6 },
-  { field: "edit", header: "Action", align: "center", minWidth: 16.6 },
+  { field: "tech_name", header: "Technology", align: "center", minWidth: 16.6 },
+  { field: "status", header: "Status", align: "center", minWidth: 16.6 },
+  { field: "edit", header: "Edit", align: "center", minWidth: 16.6 },
+  { field: "delete", header: "Delete", align: "center", minWidth: 16.6 }
+
 ];
 
 function TechnologyMast() {
@@ -79,7 +79,7 @@ function TechnologyMast() {
 
   const [selectedItems, setSelectedItems] = useState(null);
 
-  const [employee, setEmployee] = useState([]);
+  const [technology, setTechnology] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -93,12 +93,12 @@ function TechnologyMast() {
   };
 
   const addOrEditRow = (emp) => {
-    setEmployee((prev) =>
+    setTechnology((prev) =>
       prev.map((item) => {
         if (item.id === emp.id) {
-          item.name = emp.name;
-          item.email = emp.email;
-          item.phone = emp.phone;
+          item.tech_name = emp.tech_name;
+          item.tech_type = emp.tech_type;
+          item.tech_dtls = emp.tech_dtls;
         }
         return item;
       })
@@ -106,11 +106,11 @@ function TechnologyMast() {
   };
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/users`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployee(json);
-      });
+    // fetch(`https://jsonplaceholder.typicode.com/users`)
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setEmployee(json);
+    //   });
   }, []);
 
   const handleChange = (rows, event) => {
@@ -182,7 +182,7 @@ function TechnologyMast() {
                 coloredShadow="info"
               >
                 <MDTypography variant="span" color="white">
-                  Project Master
+                  Technology Master
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -197,25 +197,27 @@ function TechnologyMast() {
                             align={column.align}
                             sx={{ fontSize: 12, fontWeight: 600 }}
                           >
-                            {/* {column.header} */}
-                            <TableSortLabel
-                              active={orderBy === column.field}
-                              direction={orderBy === column.field ? order : "asc"}
-                              onClick={createSortHandler(column.field)}
-                            >
-                              {column.header}
-                              {orderBy === column.field ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                                </Box>
-                              ) : null}
-                            </TableSortLabel>
+                             {column.field !== "edit" && column.field !== "delete" ? (                              <TableSortLabel
+                                active={orderBy === column.field}
+                                direction={orderBy === column.field ? order : "asc"}
+                                onClick={createSortHandler(column.field)}
+                              >
+                                {column.header}
+                                {orderBy === column.field ? (
+                                  <Box component="span" sx={visuallyHidden}>
+                                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                                  </Box>
+                                ) : null}
+                              </TableSortLabel>
+                            ) : (
+                              column.header
+                            )}
                           </TableCell>
                         ))}
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {employee
+                      {technology
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => {
                           return (
@@ -255,6 +257,12 @@ function TechnologyMast() {
                                       </IconButton>
                                     </TableCell>
                                   );
+                                } else if (column.field === "delete") {
+                                  <TableCell key={column.field} align={column.align}>
+                                    <IconButton aria-label="edit" color="danger">
+                                      <DeleteOutlinedIcon />
+                                    </IconButton>
+                                  </TableCell>;
                                 } else {
                                   rowValue = (
                                     <TableCell
@@ -277,7 +285,7 @@ function TechnologyMast() {
                 <TablePagination
                   rowsPerPageOptions={[10, 25, 100]}
                   component="div"
-                  count={employee.length}
+                  count={technology.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
