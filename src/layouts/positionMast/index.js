@@ -63,7 +63,6 @@ const tblColumn = [
   { field: "edit", header: "Action", align: "center", minWidth: 16.6 },
 ];
 
-
 function PositionMast() {
   const { columns, rows } = authorsTableData();
   const { columns: pColumns, rows: pRows } = projectsTableData();
@@ -189,8 +188,8 @@ function PositionMast() {
                   Position Master
                 </MDTypography>
               </MDBox>
-              <MDBox pt={3}>{/* DATATABLE */}
-              <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
+              <MDBox pt={3}>
+                <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
                   <Table stickyHeader aria-label="sticky table">
                     <TableHead sx={{ display: "table-header-group" }}>
                       <TableRow>
@@ -231,7 +230,10 @@ function PositionMast() {
                                     <TableCell
                                       key={column.field}
                                       align={column.align}
-                                      sx={{ fontSize: 13, fontWeight: 500 }}
+                                      sx={{
+                                        fontSize: 13,
+                                        fontWeight: 500,
+                                      }}
                                     >
                                       {index + 1}
                                     </TableCell>
@@ -264,7 +266,10 @@ function PositionMast() {
                                     <TableCell
                                       key={column.field}
                                       align={column.align}
-                                      sx={{ fontSize: 13, fontWeight: 500 }}
+                                      sx={{
+                                        fontSize: 13,
+                                        fontWeight: 500,
+                                      }}
                                     >
                                       {row[column.field]}
                                     </TableCell>
@@ -287,14 +292,12 @@ function PositionMast() {
                   onPageChange={handleChangePage}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-               <MDDialog
+                <MDDialog
                   isOpen={open}
                   items={selectedItems}
                   addOrEditRow={addOrEditRow}
                   handleClose={handleClose}
                 />
-              
-              
               </MDBox>
             </Card>
           </Grid>
