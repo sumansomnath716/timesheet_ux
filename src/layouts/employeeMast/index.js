@@ -41,6 +41,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Box from "@mui/material/Box";
+import { visuallyHidden } from "@mui/utils";
 /****
  * END
  */
@@ -65,9 +68,16 @@ const tblColumn = [
 //   <MDDialog isOpen={visibility_status} items={items} />;
 // }
 
-function EmployeeMast() {
+function EmployeeMast(props) {
+  // const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const createSortHandler = (property) => (event) => {
+    handleRequestSort(event, property);
+  };
   // const { columns, rows } = authorsTableData();
   // const { columns: pColumns, rows: pRows } = projectsTableData();
+
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("sl_no");
 
   const [open, setOpen] = useState(false);
 
@@ -84,6 +94,19 @@ function EmployeeMast() {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const addOrEditRow = (emp) => {
+    setEmployee((prev) =>
+      prev.map((item) => {
+        if (item.id === emp.id) {
+          item.name = emp.name;
+          item.email = emp.email;
+          item.phone = emp.phone;
+        }
+        return item;
+      })
+    );
   };
 
   useEffect(() => {
@@ -105,6 +128,43 @@ function EmployeeMast() {
   const getRow = (rows) => {
     setOpen(true);
     setSelectedItems(rows);
+  };
+
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+  // Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
+  // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
+  // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
+  // with exampleArray.slice().sort(exampleComparator)
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  const handleRequestSort = (event, property) => {
+    console.log(property);
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
   };
 
   return (
@@ -130,17 +190,30 @@ function EmployeeMast() {
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
-                <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
-                  <Table aria-label="a dense table">
+                <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
+                  <Table stickyHeader aria-label="sticky table">
                     <TableHead sx={{ display: "table-header-group" }}>
                       <TableRow>
                         {tblColumn.map((column) => (
                           <TableCell
+                            sortDirection={orderBy === column.field ? order : false}
                             key={column.field}
                             align={column.align}
                             sx={{ fontSize: 12, fontWeight: 600 }}
                           >
-                            {column.header}
+                            {/* {column.header} */}
+                            <TableSortLabel
+                              active={orderBy === column.field}
+                              direction={orderBy === column.field ? order : "asc"}
+                              onClick={createSortHandler(column.field)}
+                            >
+                              {column.header}
+                              {orderBy === column.field ? (
+                                <Box component="span" sx={visuallyHidden}>
+                                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                                </Box>
+                              ) : null}
+                            </TableSortLabel>
                           </TableCell>
                         ))}
                       </TableRow>
@@ -214,7 +287,12 @@ function EmployeeMast() {
                   onPageChange={handleChangePage}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-                <MDDialog isOpen={open} items={selectedItems} handleClose={handleClose} />
+                <MDDialog
+                  isOpen={open}
+                  items={selectedItems}
+                  addOrEditRow={addOrEditRow}
+                  handleClose={handleClose}
+                />
               </MDBox>
             </Card>
           </Grid>

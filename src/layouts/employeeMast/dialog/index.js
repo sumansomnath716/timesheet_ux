@@ -11,7 +11,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const MDDialog = ({ isOpen, handleClose, items }) => {
+const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
+  const addOrEditForm = (emp_dtls) => {
+    addOrEditRow(emp_dtls);
+    handleClose();
+  };
   return (
     <Dialog
       fullWidth
@@ -24,10 +28,10 @@ const MDDialog = ({ isOpen, handleClose, items }) => {
     >
       <DialogTitle sx={{ fontSize: 12 }}>{"Employee Entry Form"}</DialogTitle>
       <DialogContent>
-        <EmpForm formValue={items}/>
+        <EmpForm formValue={items} submit={addOrEditForm} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Submit</Button>
+        <Button type="submit" form="empFrm"> Submit </Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>

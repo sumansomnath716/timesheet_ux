@@ -17,7 +17,7 @@ const schema = Yup.object().shape({
     .min(10, "!!Minimum 10 digits allowed")
     .max(10, "!!Maximum 10 digits allowed"),
 });
-const EmpForm = ({ formValue }) => {
+const EmpForm = ({ formValue, submit }) => {
   const ref = useRef();
   useEffect(() => {
     ref.current.resetForm();
@@ -25,20 +25,22 @@ const EmpForm = ({ formValue }) => {
       ref.current.initialValues["name"] = formValue?.name;
       ref.current.initialValues["email"] = formValue?.email;
       ref.current.initialValues["phone"] = formValue?.phone;
+      ref.current.initialValues["id"] = formValue?.id;
     }
   }, [formValue]);
 
   return (
     <Formik
-      initialValues={{ name: "", email: "", phone: "" }}
+      initialValues={{ name: "", email: "", phone: "", id: 0 }}
       validationSchema={schema}
       innerRef={ref}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={(values,{resetForm}) => {
+        submit(values);
+        resetForm();
       }}
     >
       {(props) => (
-        <form onSubmit={props.handleSubmit} autoComplete="off">
+        <form id="empFrm" onSubmit={props.handleSubmit} autoComplete="off">
           <Box
             component="div"
             sx={{
