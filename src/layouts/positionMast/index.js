@@ -55,7 +55,7 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import MDDialog from "./dialog/index";
 
 const tblColumn = [
-  { field: "pos_id", header: "Sl No.", align: "center", minWidth: 33.33 },
+  { field: "sl_no", header: "Sl No.", align: "center", minWidth: 33.33 },
   { field: "pos_name", header: "Position", align: "center", minWidth: 33.33 },
   { field: "edit", header: "Action", align: "center", minWidth: 33.33 },
 ];
@@ -78,7 +78,7 @@ function PositionMast() {
 
   const [selectedItems, setSelectedItems] = useState(null);
 
-  const [employee, setEmployee] = useState([]);
+  const [position, setPosition] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -92,13 +92,11 @@ function PositionMast() {
   };
 
   const addOrEditRow = (emp) => {
-    // setEmployee(item)
-    setEmployee((prev) =>
+    // setPosition(item)
+    setPosition((prev) =>
       prev.map((item) => {
         if (item.id === emp.id) {
-          item.name = emp.name;
-          item.email = emp.email;
-          item.phone = emp.phone;
+          item.pos_name = emp.pos_name;
         }
         return item;
       })
@@ -106,11 +104,11 @@ function PositionMast() {
   };
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/users`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployee(json);
-      });
+    // fetch(`https://jsonplaceholder.typicode.com/users`)
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setPosition(json);
+    //   });
   }, []);
 
   const handleChange = (rows, event) => {
@@ -215,14 +213,14 @@ function PositionMast() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {employee
+                      {position
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => {
                           return (
                             <TableRow tabIndex={-1} key={row.id}>
                               {tblColumn.map((column) => {
                                 let rowValue;
-                                if (column.field === "pos_id") {
+                                if (column.field === "sl_no") {
                                   rowValue = (
                                     <TableCell
                                       key={column.field}
@@ -283,7 +281,7 @@ function PositionMast() {
                 <TablePagination
                   rowsPerPageOptions={[10, 25, 100]}
                   component="div"
-                  count={employee.length}
+                  count={position.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
