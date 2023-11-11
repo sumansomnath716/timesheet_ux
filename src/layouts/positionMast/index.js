@@ -55,12 +55,9 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import MDDialog from "./dialog/index";
 
 const tblColumn = [
-  { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
-  { field: "name", header: "Employee", align: "center", minWidth: 16.6 },
-  { field: "email", header: "Email", align: "center", minWidth: 16.6 },
-  { field: "phone", header: "Contact", align: "center", minWidth: 16.6 },
-  { field: "toggle", header: "Status", align: "center", minWidth: 16.6 },
-  { field: "edit", header: "Action", align: "center", minWidth: 16.6 },
+  { field: "pos_id", header: "Sl No.", align: "center", minWidth: 33.33 },
+  { field: "pos_name", header: "Position", align: "center", minWidth: 33.33 },
+  { field: "edit", header: "Action", align: "center", minWidth: 33.33 },
 ];
 
 function PositionMast() {
@@ -225,7 +222,7 @@ function PositionMast() {
                             <TableRow tabIndex={-1} key={row.id}>
                               {tblColumn.map((column) => {
                                 let rowValue;
-                                if (column.field === "sl_no") {
+                                if (column.field === "pos_id") {
                                   rowValue = (
                                     <TableCell
                                       key={column.field}
@@ -238,7 +235,7 @@ function PositionMast() {
                                       {index + 1}
                                     </TableCell>
                                   );
-                                } else if (column.field === "toggle") {
+                                } else if (column.field === "pos_type") {
                                   rowValue = (
                                     <TableCell key={column.field} align={column.align}>
                                       <Switch

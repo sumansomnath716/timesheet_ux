@@ -1,40 +1,50 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
+/*** FOR SELECT MATERIAL BOX */
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+/*** END */
+
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import LinkIcon from "@mui/icons-material/Link";
+import InfoIcon from "@mui/icons-material/Info";
 
 const schema = Yup.object().shape({
-  name: Yup.string().required("!!Please Provide Name"),
-  email: Yup.string().required("!!Please Provide Email").email("!!Please Provide Valid Email"),
-  phone: Yup.string()
-    .required("!!Please Provide Contact Number")
-    .min(10, "!!Minimum 10 digits allowed")
-    .max(10, "!!Maximum 10 digits allowed"),
+  proj_name: Yup.string().required("!!Please Provide Project"),
 });
-const EmpForm = ({ formValue, submit }) => {
+const PosForm = ({ formValue, submit }) => {
   const ref = useRef();
+  const [technology_mst, setTechnology] = useState([]);
+  const [assign_members, setassignMembers] = useState([]);
+
   useEffect(() => {
-    ref.current.resetForm();
-    if (formValue) {
-      ref.current.initialValues["name"] = formValue?.name;
-      ref.current.initialValues["email"] = formValue?.email;
-      ref.current.initialValues["phone"] = formValue?.phone;
-      ref.current.initialValues["id"] = formValue?.id;
-    }
+    //     ref.current.resetForm();
+    //     if (formValue) {
+    //       ref.current.initialValues["name"] = formValue?.name;
+    //       ref.current.initialValues["email"] = formValue?.email;
+    //       ref.current.initialValues["phone"] = formValue?.phone;
+    //       ref.current.initialValues["id"] = formValue?.id;
+    //     }
   }, [formValue]);
 
   return (
     <Formik
-      initialValues={{ name: "", email: "", phone: "", id: 0 }}
+      initialValues={{
+        pos_type: "",
+        pos_dtls: "",
+      }}
       validationSchema={schema}
       innerRef={ref}
-      onSubmit={(values,{resetForm}) => {
+      onSubmit={(values, { resetForm }) => {
         submit(values);
         resetForm();
       }}
@@ -49,30 +59,30 @@ const EmpForm = ({ formValue, submit }) => {
             noValidate
             autoComplete="off"
           >
+            {/* PROJECT NAME */}
             <TextField
-              error={props.errors.name && props.touched.name}
+              error={props.errors.pos_type && props.touched.pos_name}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <PersonOutlineOutlinedIcon />
+                    <AccountTreeIcon />
                   </InputAdornment>
                 ),
               }}
               type="text"
-              label="Name"
+              label="Position Type"
               size="small"
-              id="name"
-              name="name"
-              value={props.values.name}
-              placeholder="Enter Name"
+              id="pos_type"
+              name="pos_type"
+              value={props.values.pos_type}
+              placeholder="Enter Type"
               onChange={props.handleChange}
               onBlur={props.handleBlur}
-              helperText={<ErrorMessage name="name" />}
+              helperText={<ErrorMessage name="pos_type" />}
             />
-            {/* <ErrorMessage name="name">
-                      {msg => <div>{msg}</div>}
-            </ErrorMessage> */}
           </Box>
+          {/* END */}
+          {/* PROJECT URL */}
           <Box
             component="div"
             sx={{
@@ -81,27 +91,28 @@ const EmpForm = ({ formValue, submit }) => {
             noValidate
             autoComplete="off"
           >
-            <TextField
-              error={props.errors.email && props.touched.email}
+            {/* <TextField
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <EmailOutlinedIcon />
+                    <LinkIcon />
                   </InputAdornment>
                 ),
               }}
-              type="email"
-              label="Email"
-              value={props.values.email}
+              type="text"
+              label="Position"
               size="small"
-              id="email"
-              name="email"
-              placeholder="Enter Email"
+              id="pos_name"
+              name="pos_name"
+              value={props.values.pos_name}
+              placeholder="Position"
               onChange={props.handleChange}
               onBlur={props.handleBlur}
-              helperText={<ErrorMessage name="email" />}
-            />
+            /> */}
           </Box>
+          {/* END */}
+
+          {/* PROJECT Details */}
           <Box
             component="div"
             sx={{
@@ -110,31 +121,32 @@ const EmpForm = ({ formValue, submit }) => {
             noValidate
             autoComplete="off"
           >
-            <TextField
-              error={props.errors.phone && props.touched.phone}
-              type="text"
-              label="Phone"
-              value={props.values.phone}
-              size="small"
-              id="phone"
-              name="phone"
-              placeholder="Enter Contact Number"
-              onChange={props.handleChange}
-              onBlur={props.handleBlur}
-              helperText={<ErrorMessage name="phone" />}
-              InputProps={{
+            {/* InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <CallOutlinedIcon />
+                    <InfoIcon />
                   </InputAdornment>
                 ),
-              }}
+              }} */}
+            <TextField
+              type="text"
+              label="Position Details"
+              size="small"
+              id="pos_dtls"
+              multiline
+              maxRows={4}
+              name="pos_dtls"
+              value={props.values.pos_dtls}
+              placeholder="Details"
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
             />
           </Box>
+          {/* END */}
         </form>
       )}
     </Formik>
   );
 };
 
-export default EmpForm;
+export default PosForm;
