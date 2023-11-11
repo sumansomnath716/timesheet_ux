@@ -19,7 +19,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import InfoIcon from "@mui/icons-material/Info";
 
 const schema = Yup.object().shape({
-  proj_name: Yup.string().required("!!Please Provide Project"),
+  pos_name: Yup.string().required("!!Please Provide Position"),
 });
 const PosForm = ({ formValue, submit }) => {
   const ref = useRef();
@@ -39,8 +39,9 @@ const PosForm = ({ formValue, submit }) => {
   return (
     <Formik
       initialValues={{
-        pos_type: "",
+        pos_name: "",
         pos_dtls: "",
+        id:0
       }}
       validationSchema={schema}
       innerRef={ref}
@@ -61,7 +62,7 @@ const PosForm = ({ formValue, submit }) => {
           >
             {/* PROJECT NAME */}
             <TextField
-              error={props.errors.pos_type && props.touched.pos_name}
+              error={props.errors.pos_name && props.touched.pos_name}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -70,15 +71,15 @@ const PosForm = ({ formValue, submit }) => {
                 ),
               }}
               type="text"
-              label="Position Type"
+              label="Position"
               size="small"
-              id="pos_type"
-              name="pos_type"
-              value={props.values.pos_type}
-              placeholder="Enter Type"
+              id="pos_name"
+              name="pos_name"
+              value={props.values.pos_name}
+              placeholder="Enter Position"
               onChange={props.handleChange}
               onBlur={props.handleBlur}
-              helperText={<ErrorMessage name="pos_type" />}
+              helperText={<ErrorMessage name="pos_name" />}
             />
           </Box>
           {/* END */}
@@ -137,7 +138,7 @@ const PosForm = ({ formValue, submit }) => {
               maxRows={4}
               name="pos_dtls"
               value={props.values.pos_dtls}
-              placeholder="Details"
+              placeholder="Enter Position Details"
               onChange={props.handleChange}
               onBlur={props.handleBlur}
             />
