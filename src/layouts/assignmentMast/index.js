@@ -54,7 +54,7 @@ import IconButton from "@mui/material/IconButton";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 
 import MDDialog from "./dialog/index";
-
+import MDCardHeader from "components/MDCardHeader";
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
   { field: "name", header: "Employee", align: "center", minWidth: 16.6 },
@@ -186,9 +186,10 @@ function AssignmentMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="h6" color="white">
+                {/* <MDTypography variant="h6" color="white">
                   Assignment Master
-                </MDTypography>
+                </MDTypography> */}
+                <MDCardHeader title="Assignment" openModal={()=> setOpen(true)}/>
               </MDBox>
               <MDBox pt={3}>
               <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>

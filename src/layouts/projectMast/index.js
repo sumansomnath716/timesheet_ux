@@ -189,20 +189,6 @@ function ProjectMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                {/* <Grid container spacing={2}>
-                  <Grid item xs={6} md={6} lg={10}>
-                    <MDTypography variant="span" color="white">
-                      Project Master
-                    </MDTypography>
-                  </Grid>
-                  <Grid item xs={6} md={6} lg={2} >
-                    <Box display="flex" justifyContent="flex-end">
-                      <IconButton aria-label="plus" color="light">
-                        <AddOutlinedIcon />
-                      </IconButton>
-                    </Box>
-                  </Grid>
-                </Grid> */}
                 <MDCardHeader title="Project" openModal={()=> setOpen(true)}/>
               </MDBox>
               <MDBox pt={3}>
