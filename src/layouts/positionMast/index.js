@@ -28,7 +28,9 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-
+import Button from '@mui/material/Button';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Tooltip from '@mui/material/Tooltip';
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -44,6 +46,7 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import { visuallyHidden } from "@mui/utils";
+// import Grid from '@mui/material/Grid';
 /****
  * END
  */
@@ -179,9 +182,25 @@ function PositionMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="h6" color="white">
+                <Grid container spacing={2}>
+  <Grid item xs={8}>
+    <MDTypography variant="h6" color="white">
                   Position Master
                 </MDTypography>
+  </Grid>
+  <Grid item xs={4}>
+  <Box display="flex" justifyContent="flex-end">
+  <Tooltip title="Add position">
+    <IconButton color="light" aria-label="add to shopping cart"  onClick={() => getRow(null)}>
+        <AddCircleIcon />
+      </IconButton>
+      </Tooltip>
+      </Box>
+  </Grid>
+  </Grid>
+                
+                
+     
               </MDBox>
               <MDBox pt={3}>
                 <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
