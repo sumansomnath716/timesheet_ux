@@ -50,12 +50,18 @@ import { visuallyHidden } from "@mui/utils";
 /****
  * END
  */
+/*******BUTTON  MATERIAL */
 
+// import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+// import IconButton from '@mui/material/IconButton';
+/**** END */
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import MDDialog from "./dialog/index";
+
+import MDCardHeader from "components/MDCardHeader";
 
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
@@ -183,9 +189,21 @@ function ProjectMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="span" color="white">
-                  Project Master
-                </MDTypography>
+                {/* <Grid container spacing={2}>
+                  <Grid item xs={6} md={6} lg={10}>
+                    <MDTypography variant="span" color="white">
+                      Project Master
+                    </MDTypography>
+                  </Grid>
+                  <Grid item xs={6} md={6} lg={2} >
+                    <Box display="flex" justifyContent="flex-end">
+                      <IconButton aria-label="plus" color="light">
+                        <AddOutlinedIcon />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                </Grid> */}
+                <MDCardHeader title="Project" openModal={()=> setOpen(true)}/>
               </MDBox>
               <MDBox pt={3}>
                 <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
