@@ -101,16 +101,21 @@ function ProjectMast() {
   };
 
   const addOrEditRow = (emp) => {
-    setProject((prev) =>
-      prev.map((item) => {
-        if (item.id === emp.id) {
-          item.proj_name = emp.proj_name;
-          item.proj_url = emp.proj_url;
-          item.proj_dtls = emp.proj_dtls;
-        }
-        return item;
-      })
-    );
+    setProject((prev) => {
+      if (emp.id > 0) {
+        prev.map((item) => {
+          if (item.id === emp.id) {
+            item.proj_name = emp.proj_name;
+            item.proj_url = emp.proj_url;
+            item.proj_dtls = emp.proj_dtls;
+          }
+          return item;
+        });
+      } else {
+        const dt = [...prev, emp];
+        return dt;
+      }
+    });
   };
 
   useEffect(() => {
@@ -132,6 +137,12 @@ function ProjectMast() {
   const getRow = (rows) => {
     setOpen(true);
     setSelectedItems(rows);
+  };
+
+  const deleteRow = (rowIndex) => {
+    setProject((prev) => {
+      return prev.splice(0, rowIndex);
+    });
   };
 
   function descendingComparator(a, b, orderBy) {
@@ -189,7 +200,7 @@ function ProjectMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDCardHeader title="Project" openModal={()=> setOpen(true)}/>
+                <MDCardHeader title="Project" openModal={() => getRow(null)} />
               </MDBox>
               <MDBox pt={3}>
                 <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
@@ -265,11 +276,17 @@ function ProjectMast() {
                                     </TableCell>
                                   );
                                 } else if (column.field === "delete") {
-                                  <TableCell key={column.field} align={column.align}>
-                                    <IconButton aria-label="edit" color="danger">
-                                      <DeleteOutlinedIcon />
-                                    </IconButton>
-                                  </TableCell>;
+                                  rowValue = (
+                                    <TableCell
+                                      onClick={() => deleteRow(index)}
+                                      key={column.field}
+                                      align={column.align}
+                                    >
+                                      <IconButton aria-label="delete" color="error">
+                                        <DeleteOutlinedIcon />
+                                      </IconButton>
+                                    </TableCell>
+                                  );
                                 } else {
                                   rowValue = (
                                     <TableCell

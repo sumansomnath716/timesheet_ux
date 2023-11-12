@@ -27,7 +27,7 @@ const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
       onClose={handleClose}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle sx={{ fontSize: 12 }}>{"Employee Entry Form"}</DialogTitle>
+      <DialogTitle sx={{ fontSize: 12 }}>{"Assignment Entry Form"}</DialogTitle>
       <DialogContent>
         <EmpForm formValue={items} submit={addOrEditForm} />
       </DialogContent>
