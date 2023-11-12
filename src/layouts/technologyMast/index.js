@@ -26,6 +26,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 // import DataTable from "examples/Tables/DataTable";
+import MDCardHeader from "components/MDCardHeader";
 
 // // Data
 // import authorsTableData from "layouts/tables/data/authorsTableData";
@@ -181,9 +182,7 @@ function TechnologyMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="span" color="white">
-                  Technology Master
-                </MDTypography>
+                <MDCardHeader title="Technology" openModal={()=> setOpen(true)}/>
               </MDBox>
               <MDBox pt={3}>
                 <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>

@@ -46,6 +46,7 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import { visuallyHidden } from "@mui/utils";
+import MDCardHeader from "components/MDCardHeader";
 // import Grid from '@mui/material/Grid';
 /****
  * END
@@ -182,22 +183,23 @@ function PositionMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <Grid container spacing={2}>
-  <Grid item xs={8}>
+                {/* <Grid container spacing={2}> */}
+  {/* <Grid item xs={8}>
     <MDTypography variant="h6" color="white">
                   Position Master
                 </MDTypography>
-  </Grid>
-  <Grid item xs={4}>
-  <Box display="flex" justifyContent="flex-end">
+  </Grid> */}
+  {/* <Grid item xs={4}> */}
+  {/* <Box display="flex" justifyContent="flex-end">
   <Tooltip title="Add position">
     <IconButton color="light" aria-label="add to shopping cart"  onClick={() => getRow(null)}>
         <AddCircleIcon />
       </IconButton>
       </Tooltip>
-      </Box>
-  </Grid>
-  </Grid>
+      </Box> */}
+      <MDCardHeader title="Position" openModal={()=> setOpen(true)}/>
+  {/* </Grid> */}
+  {/* </Grid> */}
                 
                 
      
