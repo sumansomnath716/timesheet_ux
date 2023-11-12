@@ -140,9 +140,9 @@ function ProjectMast() {
   };
 
   const deleteRow = (rowIndex) => {
-    setProject((prev) => {
-      return prev.splice(0, rowIndex);
-    });
+    const dt = [...project];
+    dt.splice(rowIndex, 1);
+    setProject(dt);
   };
 
   function descendingComparator(a, b, orderBy) {
@@ -239,13 +239,13 @@ function ProjectMast() {
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => {
                           return (
-                            <TableRow tabIndex={-1} key={row.id}>
+                            <TableRow tabIndex={-1} key={index}>
                               {tblColumn.map((column) => {
                                 let rowValue;
                                 if (column.field === "sl_no") {
                                   rowValue = (
                                     <TableCell
-                                      key={column.field}
+                                      key={`${column.field} ${index}`}
                                       align={column.align}
                                       sx={{ fontSize: 13, fontWeight: 500 }}
                                     >
@@ -254,7 +254,10 @@ function ProjectMast() {
                                   );
                                 } else if (column.field === "proj_status") {
                                   rowValue = (
-                                    <TableCell key={column.field} align={column.align}>
+                                    <TableCell
+                                      key={`${column.field} ${index}`}
+                                      align={column.align}
+                                    >
                                       <Switch
                                         color="primary"
                                         id={`active_${row.id}`}
@@ -265,7 +268,10 @@ function ProjectMast() {
                                   );
                                 } else if (column.field === "edit") {
                                   rowValue = (
-                                    <TableCell key={column.field} align={column.align}>
+                                    <TableCell
+                                      key={`${column.field} ${index}`}
+                                      align={column.align}
+                                    >
                                       <IconButton
                                         aria-label="edit"
                                         color="info"
@@ -278,8 +284,8 @@ function ProjectMast() {
                                 } else if (column.field === "delete") {
                                   rowValue = (
                                     <TableCell
+                                      key={`${column.field} ${index}`}
                                       onClick={() => deleteRow(index)}
-                                      key={column.field}
                                       align={column.align}
                                     >
                                       <IconButton aria-label="delete" color="error">
@@ -290,7 +296,7 @@ function ProjectMast() {
                                 } else {
                                   rowValue = (
                                     <TableCell
-                                      key={column.field}
+                                      key={`${column.field} ${index}`}
                                       align={column.align}
                                       sx={{ fontSize: 13, fontWeight: 500 }}
                                     >
