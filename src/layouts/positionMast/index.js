@@ -27,10 +27,11 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
-import Button from '@mui/material/Button';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Tooltip from '@mui/material/Tooltip';
+// import DataTable from "examples/Tables/DataTable";
+// import Button from "@mui/material/Button";
+// import AddCircleIcon from "@mui/icons-material/AddCircle";
+// import Tooltip from "@mui/material/Tooltip";
+
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -58,6 +59,8 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 
 import MDDialog from "./dialog/index";
 
+import axios from "axios";
+const baseURL = "http://192.168.0.101:8080/api";
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 33.33 },
   { field: "pos_name", header: "Position", align: "center", minWidth: 33.33 },
@@ -95,24 +98,33 @@ function PositionMast() {
     setPage(0);
   };
 
-  const addOrEditRow = (emp) => {
-    // setPosition(item)
-    setPosition((prev) =>
-      prev.map((item) => {
-        if (item.id === emp.id) {
-          item.pos_name = emp.pos_name;
-        }
-        return item;
-      })
-    );
+  const addOrEditRow = (pos) => {
+    console.log(position);
+    console.log(pos);
+    /************ADD POSITION *****************/
+    if (position.findIndex((item) => item.id == pos.id) == -1) {
+      const dt = [...position, pos];
+      setPosition(dt);
+    } else {
+      /************EDIT POSITION *****************/
+      setPosition((prev) =>
+        prev.map((item) => {
+          if (item.id === pos.id) {
+            item.pos_name = pos.pos_name;
+            item.pos_dtls = pos.pos_dtls;
+          }
+          return item;
+        })
+      );
+      /*************END************************* */
+    }
   };
 
   useEffect(() => {
-    // fetch(`https://jsonplaceholder.typicode.com/users`)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setPosition(json);
-    //   });
+    axios.get(baseURL + "/position").then((response) => {
+      console.log(response.data);
+      setPosition(response.data);
+    });
   }, []);
 
   const handleChange = (rows, event) => {
@@ -124,8 +136,9 @@ function PositionMast() {
   };
 
   const getRow = (rows) => {
+    const dt = rows;
     setOpen(true);
-    setSelectedItems(rows);
+    setSelectedItems(dt);
   };
 
   function descendingComparator(a, b, orderBy) {
@@ -183,26 +196,7 @@ function PositionMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                {/* <Grid container spacing={2}> */}
-  {/* <Grid item xs={8}>
-    <MDTypography variant="h6" color="white">
-                  Position Master
-                </MDTypography>
-  </Grid> */}
-  {/* <Grid item xs={4}> */}
-  {/* <Box display="flex" justifyContent="flex-end">
-  <Tooltip title="Add position">
-    <IconButton color="light" aria-label="add to shopping cart"  onClick={() => getRow(null)}>
-        <AddCircleIcon />
-      </IconButton>
-      </Tooltip>
-      </Box> */}
-      <MDCardHeader title="Position" openModal={()=> setOpen(true)}/>
-  {/* </Grid> */}
-  {/* </Grid> */}
-                
-                
-     
+                <MDCardHeader title="Position" openModal={() => getRow(null)} />
               </MDBox>
               <MDBox pt={3}>
                 <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
@@ -244,7 +238,7 @@ function PositionMast() {
                                 if (column.field === "sl_no") {
                                   rowValue = (
                                     <TableCell
-                                      key={column.field}
+                                      key={index}
                                       align={column.align}
                                       sx={{
                                         fontSize: 13,
@@ -254,20 +248,9 @@ function PositionMast() {
                                       {index + 1}
                                     </TableCell>
                                   );
-                                } else if (column.field === "pos_type") {
-                                  rowValue = (
-                                    <TableCell key={column.field} align={column.align}>
-                                      <Switch
-                                        color="primary"
-                                        id={`active_${row.id}`}
-                                        onChange={(ev) => handleChange(row, ev)}
-                                        name={`active_${row.id}`}
-                                      />
-                                    </TableCell>
-                                  );
                                 } else if (column.field === "edit") {
                                   rowValue = (
-                                    <TableCell key={column.field} align={column.align}>
+                                    <TableCell key={column.field + index} align={column.align}>
                                       <IconButton
                                         aria-label="edit"
                                         color="info"
@@ -280,7 +263,7 @@ function PositionMast() {
                                 } else {
                                   rowValue = (
                                     <TableCell
-                                      key={column.field}
+                                      key={row[column.field]}
                                       align={column.align}
                                       sx={{
                                         fontSize: 13,

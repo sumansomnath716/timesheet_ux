@@ -18,6 +18,7 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import LinkIcon from "@mui/icons-material/Link";
 import InfoIcon from "@mui/icons-material/Info";
 
+
 const schema = Yup.object().shape({
   pos_name: Yup.string().required("!!Please Provide Position"),
 });
@@ -27,13 +28,10 @@ const PosForm = ({ formValue, submit }) => {
   const [assign_members, setassignMembers] = useState([]);
 
   useEffect(() => {
-    //     ref.current.resetForm();
-    //     if (formValue) {
-    //       ref.current.initialValues["name"] = formValue?.name;
-    //       ref.current.initialValues["email"] = formValue?.email;
-    //       ref.current.initialValues["phone"] = formValue?.phone;
-    //       ref.current.initialValues["id"] = formValue?.id;
-    //     }
+    ref.current.resetForm();
+    ref.current.initialValues["pos_name"] = formValue ? formValue?.pos_name : "";
+    ref.current.initialValues["pos_dtls"] = formValue ? formValue?.pos_dtls : "";
+    ref.current.initialValues["id"] = formValue ? formValue?.id : 0;
   }, [formValue]);
 
   return (
@@ -41,7 +39,7 @@ const PosForm = ({ formValue, submit }) => {
       initialValues={{
         pos_name: "",
         pos_dtls: "",
-        id:0
+        id: 0,
       }}
       validationSchema={schema}
       innerRef={ref}
