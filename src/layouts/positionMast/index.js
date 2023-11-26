@@ -60,7 +60,7 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import MDDialog from "./dialog/index";
 
 import axios from "axios";
-const baseURL = "http://192.168.0.101:8080/api";
+const baseURL = "http://192.168.0.102:8080/api";
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 33.33 },
   { field: "pos_name", header: "Position", align: "center", minWidth: 33.33 },
