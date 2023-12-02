@@ -6,15 +6,24 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-import EmpForm from "../Form/index";
+import TechForm from "../Form/index";
+import axios from "axios";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
   const addOrEditForm = (emp_dtls) => {
-    addOrEditRow(emp_dtls);
-    handleClose();
+    // addOrEditRow(emp_dtls);
+    // handleClose();
+    axios
+      .post("/technology/modify", {
+        dt: emp_dtls,
+      })
+      .then((response) => {
+        addOrEditRow(response.data.data);
+        handleClose();
+      });
   };
   return (
     <Dialog
@@ -28,12 +37,11 @@ const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
     >
       <DialogTitle sx={{ fontSize: 12 }}>{"Employee Entry Form"}</DialogTitle>
       <DialogContent>
-        <EmpForm formValue={items} submit={addOrEditForm} />
+        <TechForm formValue={items} submit={addOrEditForm} />
       </DialogContent>
       <DialogActions>
-        <Button type="submit" form="empFrm">
-          {" "}
-          Submit{" "}
+        <Button type="submit" form="techFrm">
+          Submit
         </Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>

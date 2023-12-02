@@ -21,17 +21,12 @@ import React, { useState, useEffect } from "react";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 // import DataTable from "examples/Tables/DataTable";
-
-// Data
-// import authorsTableData from "layouts/tables/data/authorsTableData";
-// import projectsTableData from "layouts/tables/data/projectsTableData";
 
 /***
  * DATA TABLE
@@ -60,9 +55,11 @@ import IconButton from "@mui/material/IconButton";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import MDDialog from "./dialog/index";
-
+import Tooltip from "@mui/material/Tooltip";
 import MDCardHeader from "components/MDCardHeader";
 
+import axios from "axios";
+import LaunchIcon from "@mui/icons-material/Launch";
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
   { field: "proj_name", header: "Project", align: "center", minWidth: 16.6 },
@@ -71,7 +68,7 @@ const tblColumn = [
   { field: "edit", header: "Edit", align: "center", minWidth: 16.6 },
   { field: "delete", header: "Delete", align: "center", minWidth: 16.6 },
 ];
-
+import CircularProgress from "@mui/material/CircularProgress";
 function ProjectMast() {
   // const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
@@ -100,34 +97,72 @@ function ProjectMast() {
     setPage(0);
   };
 
-  const addOrEditRow = (emp) => {
-    setProject((prev) => {
-      if (emp.id > 0) {
+  const addOrEditRow = (proj) => {
+    /************ADD POJECT *****************/
+    if (project.findIndex((item) => item.id == proj.id) == -1) {
+      const dt = [...project, proj];
+      setProject(dt);
+    } else {
+      /************EDIT POSITION *****************/
+      setProject((prev) =>
         prev.map((item) => {
-          if (item.id === emp.id) {
-            item.proj_name = emp.proj_name;
-            item.proj_url = emp.proj_url;
-            item.proj_dtls = emp.proj_dtls;
+          if (item.id === proj.id) {
+            item.proj_name = proj.proj_name;
+            item.proj_dtls = proj.proj_dtls;
+            item.proj_url = proj.proj_url;
+            item.status = proj.status;
           }
           return item;
-        });
-      } else {
-        const dt = [...prev, emp];
-        return dt;
-      }
-    });
+        })
+      );
+      /*************END************************* */
+    }
   };
 
   useEffect(() => {
-    // fetch(`https://jsonplaceholder.typicode.com/users`)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setEmployee(json);
-    //   });
+    axios.get("/project").then((response) => {
+      setProject(response.data);
+    });
   }, []);
 
   const handleChange = (rows, event) => {
-    console.log(event.target.checked);
+    try {
+      document.getElementById(`loader_${rows.id}`).style.display = "block";
+      document.getElementById(`active_${rows.id}`).setAttribute("disabled", true);
+      setProject((prev) =>
+        prev.map((item) => {
+          if (item.id === rows.id) {
+            item.status = event.target.checked;
+          }
+          return item;
+        })
+      );
+      axios
+        .post("/project/modify", {
+          dt: { ...rows, status: event.target.checked },
+        })
+        .catch((err) => {
+          setProject((prev) =>
+            prev.map((item) => {
+              if (item.id === rows.id) {
+                item.status = !event.target.checked;
+              }
+              return item;
+            })
+          );
+          document.getElementById(`loader_${rows.id}`).style.display = "none";
+          document.getElementById(`active_${rows.id}`).removeAttribute("disabled");
+        })
+        .then((response) => {
+          setTimeout(() => {
+            document.getElementById(`loader_${rows.id}`).style.display = "none";
+            document.getElementById(`active_${rows.id}`).removeAttribute("disabled");
+          }, 500);
+        });
+    } catch (error) {
+      document.getElementById(`loader_${rows.id}`).style.display = "none";
+      document.getElementById(`active_${rows.id}`).removeAttribute("disabled");
+    }
   };
 
   const handleClose = () => {
@@ -139,10 +174,23 @@ function ProjectMast() {
     setSelectedItems(rows);
   };
 
-  const deleteRow = (rowIndex) => {
-    const dt = [...project];
-    dt.splice(rowIndex, 1);
-    setProject(dt);
+  const deleteRow = (rowIndex, row) => {
+    document.getElementById(`delete_loader_${row.id}`).style.display = "block";
+    axios
+      .request({
+        url: "/project/delete",
+        method: "get",
+        params: {
+          id: row?.id,
+        },
+      })
+      .catch((err) => {
+        document.getElementById(`delete_loader_${row.id}`).style.display = "none";
+      })
+      .then((res) => {
+        setProject([...project.slice(0, rowIndex), ...project.slice(rowIndex + 1)]);
+        document.getElementById(`delete_loader_${row.id}`).style.display = "none";
+      });
   };
 
   function descendingComparator(a, b, orderBy) {
@@ -258,12 +306,26 @@ function ProjectMast() {
                                       key={`${column.field} ${index}`}
                                       align={column.align}
                                     >
-                                      <Switch
-                                        color="primary"
-                                        id={`active_${row.id}`}
-                                        onChange={(ev) => handleChange(row, ev)}
-                                        name={`active_${row.id}`}
-                                      />
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                        }}
+                                      >
+                                        <Switch
+                                          color="primary"
+                                          id={`active_${row.id}`}
+                                          onChange={(ev) => handleChange(row, ev)}
+                                          name={`active_${row.id}`}
+                                          checked={row.status}
+                                        />
+                                        <CircularProgress
+                                          size={20}
+                                          style={{ display: "none" }}
+                                          id={`loader_${row.id}`}
+                                        />
+                                      </Box>
                                     </TableCell>
                                   );
                                 } else if (column.field === "edit") {
@@ -285,12 +347,47 @@ function ProjectMast() {
                                   rowValue = (
                                     <TableCell
                                       key={`${column.field} ${index}`}
-                                      onClick={() => deleteRow(index)}
                                       align={column.align}
                                     >
-                                      <IconButton aria-label="delete" color="error">
-                                        <DeleteOutlinedIcon />
-                                      </IconButton>
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                        }}
+                                      >
+                                        <IconButton
+                                          aria-label="delete"
+                                          color="error"
+                                          onClick={() => deleteRow(index, row)}
+                                        >
+                                          <DeleteOutlinedIcon />
+                                        </IconButton>
+                                        <CircularProgress
+                                          size={20}
+                                          style={{ display: "none" }}
+                                          id={`delete_loader_${row.id}`}
+                                        />
+                                      </Box>
+                                    </TableCell>
+                                  );
+                                } else if (column.field === "proj_url") {
+                                  rowValue = (
+                                    <TableCell
+                                      key={`${column.field} ${index}`}
+                                      align={column.align}
+                                    >
+                                      <Tooltip title={row.proj_url} arrow>
+                                        <IconButton
+                                          aria-label="link"
+                                          color="info"
+                                          onClick={() =>
+                                            window.open(`https://${row.proj_url}`, "__blank")
+                                          }
+                                        >
+                                          <LaunchIcon />
+                                        </IconButton>
+                                      </Tooltip>
                                     </TableCell>
                                   );
                                 } else {

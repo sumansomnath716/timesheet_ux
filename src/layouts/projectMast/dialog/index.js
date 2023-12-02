@@ -1,4 +1,3 @@
-
 import React from "react";
 import Dialog from "@mui/material/Dialog";
 import Button from "@mui/material/Button";
@@ -8,14 +7,23 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import EmpForm from "../Form/index";
+import axios from "axios";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
-  const addOrEditForm = (emp_dtls) => {
-    addOrEditRow(emp_dtls);
-    handleClose();
+  const addOrEditForm = (proj_dtls) => {
+    // addOrEditRow(proj_dtls);
+    // handleClose();
+    axios
+      .post("/project/modify", {
+        dt: proj_dtls,
+      })
+      .then((response) => {
+        addOrEditRow(response.data.data);
+        handleClose();
+      });
   };
   return (
     <Dialog
@@ -32,7 +40,9 @@ const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
         <EmpForm formValue={items} submit={addOrEditForm} />
       </DialogContent>
       <DialogActions>
-        <Button type="submit" form="empFrm"> Submit </Button>
+        <Button type="submit" form="projFrm">
+          Submit
+        </Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>

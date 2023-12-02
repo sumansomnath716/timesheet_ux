@@ -9,7 +9,7 @@ import Slide from "@mui/material/Slide";
 import EmpForm from "../Form/index";
 import axios from "axios";
 
-const baseURL = "http://192.168.0.102:8080/api";
+// const baseURL = "http://192.168.0.105:8080/api";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
   const addOrEditForm = (emp_dtls) => {
     axios
-      .post(baseURL + "/position_add_edit", {
+      .post("/position/modify", {
         dt: emp_dtls,
       })
       .then((response) => {
@@ -42,8 +42,7 @@ const MDDialog = ({ isOpen, handleClose, items, addOrEditRow }) => {
       </DialogContent>
       <DialogActions>
         <Button type="submit" form="empFrm">
-          {" "}
-          Submit{" "}
+          Submit
         </Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>

@@ -60,7 +60,7 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import MDDialog from "./dialog/index";
 
 import axios from "axios";
-const baseURL = "http://192.168.0.102:8080/api";
+// const baseURL = "http://192.168.0.105:8080/api";
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 33.33 },
   { field: "pos_name", header: "Position", align: "center", minWidth: 33.33 },
@@ -99,8 +99,6 @@ function PositionMast() {
   };
 
   const addOrEditRow = (pos) => {
-    console.log(position);
-    console.log(pos);
     /************ADD POSITION *****************/
     if (position.findIndex((item) => item.id == pos.id) == -1) {
       const dt = [...position, pos];
@@ -121,8 +119,7 @@ function PositionMast() {
   };
 
   useEffect(() => {
-    axios.get(baseURL + "/position").then((response) => {
-      console.log(response.data);
+    axios.get("/position").then((response) => {
       setPosition(response.data);
     });
   }, []);

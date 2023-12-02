@@ -28,12 +28,11 @@ const ProjForm = ({ formValue, submit }) => {
 
   useEffect(() => {
     ref.current.resetForm();
-    if (formValue) {
-      ref.current.initialValues["proj_name"] = formValue?.proj_name;
-      ref.current.initialValues["proj_url"] = formValue?.proj_url;
-      ref.current.initialValues["proj_dtls"] = formValue?.proj_dtls;
-      ref.current.initialValues["id"] = formValue?.id;
-    }
+    ref.current.initialValues["proj_name"] = formValue ? formValue.proj_name : "";
+    ref.current.initialValues["proj_url"] = formValue ? formValue.proj_url : "";
+    ref.current.initialValues["proj_dtls"] = formValue ? formValue.proj_dtls : "";
+    ref.current.initialValues["id"] = formValue ? formValue?.id : 0;
+    ref.current.initialValues["status"] = formValue ? formValue?.status : false;
   }, [formValue]);
 
   return (
@@ -43,6 +42,7 @@ const ProjForm = ({ formValue, submit }) => {
         id: 0,
         proj_url: "",
         proj_dtls: "",
+        status: false
       }}
       validationSchema={schema}
       innerRef={ref}
@@ -52,7 +52,7 @@ const ProjForm = ({ formValue, submit }) => {
       }}
     >
       {(props) => (
-        <form id="empFrm" onSubmit={props.handleSubmit} autoComplete="off">
+        <form id="projFrm" onSubmit={props.handleSubmit} autoComplete="off">
           <Box
             component="div"
             sx={{

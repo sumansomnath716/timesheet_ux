@@ -53,16 +53,16 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-
 import MDDialog from "./dialog/index";
+
+import axios from "axios";
 
 const tblColumn = [
   { field: "sl_no", header: "Sl No.", align: "center", minWidth: 16.6 },
   { field: "tech_name", header: "Technology", align: "center", minWidth: 16.6 },
   { field: "status", header: "Status", align: "center", minWidth: 16.6 },
   { field: "edit", header: "Edit", align: "center", minWidth: 16.6 },
-  { field: "delete", header: "Delete", align: "center", minWidth: 16.6 }
-
+  { field: "delete", header: "Delete", align: "center", minWidth: 16.6 },
 ];
 
 function TechnologyMast() {
@@ -93,25 +93,48 @@ function TechnologyMast() {
     setPage(0);
   };
 
-  const addOrEditRow = (emp) => {
-    setTechnology((prev) =>
-      prev.map((item) => {
-        if (item.id === emp.id) {
-          item.tech_name = emp.tech_name;
-          item.tech_type = emp.tech_type;
-          item.tech_dtls = emp.tech_dtls;
-        }
-        return item;
-      })
-    );
+  const addOrEditRow = (tech) => {
+     /************ADD Technology *****************/
+     if (technology.findIndex((item) => item.id == tech.id) == -1) {
+      const dt = [...technology, tech];
+      setTechnology(dt);
+    } else {
+      /************EDIT POSITION *****************/
+      setTechnology((prev) =>
+        prev.map((item) => {
+          if (item.id === tech.id) {
+            item.tech_name = tech.tech_name;
+            item.tech_type = tech.tech_type;
+            item.tech_dtls = tech.tech_dtls;
+            item.status = tech.status;
+          }
+          return item;
+        })
+      );
+      /*************END************************* */
+    }
+    // setTechnology((prev) =>
+    //   prev.map((item) => {
+    //     if (item.id === emp.id) {
+    //       item.tech_name = emp.tech_name;
+    //       item.tech_type = emp.tech_type;
+    //       item.tech_dtls = emp.tech_dtls;
+    //     }
+    //     return item;
+    //   })
+    // );
   };
 
   useEffect(() => {
-    // fetch(`https://jsonplaceholder.typicode.com/users`)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setEmployee(json);
-    //   });
+    axios
+      .get("/technology")
+      .then((response) => {
+        // console.log(response);
+        setTechnology(response ? response.data : []);
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
   }, []);
 
   const handleChange = (rows, event) => {
@@ -182,7 +205,7 @@ function TechnologyMast() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDCardHeader title="Technology" openModal={()=> setOpen(true)}/>
+                <MDCardHeader title="Technology" openModal={() => setOpen(true)} />
               </MDBox>
               <MDBox pt={3}>
                 <TableContainer component={Paper} sx={{ boxShadow: "none", maxHeight: 440 }}>
@@ -196,7 +219,8 @@ function TechnologyMast() {
                             align={column.align}
                             sx={{ fontSize: 12, fontWeight: 600 }}
                           >
-                             {column.field !== "edit" && column.field !== "delete" ? (                              <TableSortLabel
+                            {column.field !== "edit" && column.field !== "delete" ? (
+                              <TableSortLabel
                                 active={orderBy === column.field}
                                 direction={orderBy === column.field ? order : "asc"}
                                 onClick={createSortHandler(column.field)}

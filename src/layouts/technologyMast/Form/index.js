@@ -44,11 +44,11 @@ const TechForm = ({ formValue, submit }) => {
       }}
     >
       {(props) => (
-        <form id="empFrm" onSubmit={props.handleSubmit} autoComplete="off">
+        <form id="techFrm" onSubmit={props.handleSubmit} autoComplete="off">
           <Box
             component="div"
             sx={{
-              "& .MuiTextField-root": { mt: 2, mb:2, width: "100%" },
+              "& .MuiTextField-root": { mt: 2, mb: 2, width: "100%" },
             }}
             noValidate
             autoComplete="off"
